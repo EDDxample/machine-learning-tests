@@ -23,6 +23,11 @@ class NeuralNetwork():
         self.layers = []
         for neurons, prev_neurons in zip(topology[1:],topology[:-1]):
             self.layers.append(Layer(neurons, prev_neurons))
+    
+    def forward_pass(self, input):
+        pass
+    def train(self, test_input, test_output, learing_rate=0.5, cost_function=COST):
+        pass
 
     def __len__(self): return len(self.layers)
     def __getitem__(self, index): return self.layers[index]
