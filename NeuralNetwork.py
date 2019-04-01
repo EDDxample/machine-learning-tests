@@ -20,12 +20,11 @@ class Layer():
 
 class NeuralNetwork():
     def __init__(self, topology):
-        self.isTraining = False
         self.layers = []
         for neurons, prev_neurons in zip(topology[1:],topology[:-1]):
             self.layers.append(Layer(neurons, prev_neurons))
     
-    def forward_pass(self, input):
+    def forward_pass(self, input, isTraining=False):
         activatedLayers = [input]
 
         for layer in self.layers:
@@ -33,7 +32,7 @@ class NeuralNetwork():
             a = layer.activation(z)
             activatedLayers.append(a)
         
-        if self.isTraining:
+        if isTraining:
             return activatedLayers
         return activatedLayers[-1]
 
