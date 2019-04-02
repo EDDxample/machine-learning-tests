@@ -32,7 +32,7 @@ class NeuralNetwork():
             a = layer.activation(z)
             activatedLayers.append(a)
         
-        if isTraining:
+        if isTraining is True:
             return activatedLayers
         return activatedLayers[-1]
     
