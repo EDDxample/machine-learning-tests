@@ -56,9 +56,10 @@ class NeuralNetwork():
             nextW = self[L].W.T
 
             # fix layer components
-            self[L].B -= np.mean(deltas[0], axis=1, keepdims=True) * learing_rate
-            self[L].W -= deltas[0] @ a_prev.T * learing_rate
+            self[L].B = self[L].B - np.mean(deltas[0], axis=1, keepdims=True) * learing_rate
+            self[L].W = self[L].W - deltas[0] @ a_prev.T * learing_rate
         
+        return layer_outputs[-1]
 
     def __len__(self): return len(self.layers)
     def __getitem__(self, index): return self.layers[index]
