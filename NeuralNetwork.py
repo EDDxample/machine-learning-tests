@@ -1,4 +1,5 @@
 import numpy as np
+from Layers import SimpleLayer
 
 ###### FUNCS ######
 def SIGMOID(x, isDerivative=False):
@@ -11,56 +12,34 @@ def COST(Ypredicted, Yreal, isDerivative=False):
     return np.mean((Yreal - Ypredicted)**2)
 ###################
 
-class Layer():
-    def __init__(self, n_neurons, n_prev_neurons, activation=SIGMOID):
-        self.W = np.random.rand(n_neurons, n_prev_neurons) *2-1
-        self.B = np.random.rand(n_neurons, 1)              *2-1
-        
-        self.activation = activation
-
 class NeuralNetwork():
     def __init__(self, topology):
         self.layers = []
         for neurons, prev_neurons in zip(topology[1:],topology[:-1]):
-            self.layers.append(Layer(neurons, prev_neurons))
+            self.layers.append(SimpleLayer(neurons, prev_neurons))
     
-    def forward_pass(self, input, isTraining=False):
-        activatedLayers = [input]
-
-        for layer in self:
-            z = layer.W @ activatedLayers[-1] + layer.B
-            a = layer.activation(z)
-            activatedLayers.append(a)
-        
-        if isTraining is True:
-            return activatedLayers
-        return activatedLayers[-1]
+    def forward_pass(self, layer_input):
+        a = layer_input
+        for layer in self.layers:
+            a = layer.forward_pass(a)
+        return a
     
-    def backprop(self, dataset_input, dataset_output, learing_rate=0.5, cost_func=COST):
-        layer_outputs = self.forward_pass(dataset_input, True)
-
-        deltas = [] # layer errors
-
-        for L in reversed(range(len(self))): # from layers.length-1 to 0
-            a = layer_outputs[L + 1]
-            a_prev = layer_outputs[L]
-            activ_a = self[L].activation(a, True)
-            
-            if L == len(self) - 1:
-                # last layer's error
-                deltas.insert(0, cost_func(a, dataset_output, True) * activ_a)
+    def backprop(self, dataset_in, dataset_out, learning_rate=0.5, cost_func=COST):
+        output = self.forward_pass(dataset_in)
+        flag = True
+        for layer in reversed(self):
+            if flag: # last layer
+                flag = False
+                delta = cost_func(output, dataset_out, True) * layer.activation(output, True)
             else:
-                # previous layer's error
-                deltas.insert(0, nextW @ deltas[0] * activ_a)
-            
-            nextW = self[L].W.T
+                delta = _W @ delta * _A
+            # saves
+            _W = layer.W.T
+            _A = layer.activation(layer.A, True)
 
-            # fix layer components
-            self[L].B = self[L].B - np.mean(deltas[0], axis=1, keepdims=True) * learing_rate
-            self[L].W = self[L].W - deltas[0] @ a_prev.T * learing_rate
-        
-        return layer_outputs[-1]
+            layer.gradient_descent(delta, learning_rate)
+
+        return output
 
     def __len__(self): return len(self.layers)
     def __getitem__(self, index): return self.layers[index]
-

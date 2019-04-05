@@ -16,7 +16,7 @@ cycles = 2000
 
 for i in range(cycles):
     # predict + train
-    prediction = nn.backprop(dataset_input, dataset_output, learing_rate=0.05)
+    prediction = nn.backprop(dataset_input, dataset_output, learning_rate=0.05)
     
     if i % 25:
         errors.append(COST(prediction, dataset_output))
@@ -29,7 +29,7 @@ for i in range(cycles):
 
         for i, _x_ in enumerate(_x):
             for j, _y_ in enumerate(_y):
-                 _Y[i, j] = nn.forward_pass(np.array([[_x_], [_y_]]), dataset_output)
+                 _Y[i, j] = nn.forward_pass(np.array([[_x_], [_y_]]))
 
         plt.pcolormesh(_x, _y, _Y, cmap='coolwarm')
         plt.axis('equal')
