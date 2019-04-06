@@ -1,8 +1,8 @@
 import numpy as np, matplotlib.pyplot as plt
 from sklearn.datasets import make_circles
 
-from NeuralNetwork import NeuralNetwork, COST
-from Layers import SimpleLayer
+from src.NeuralNetwork import NeuralNetwork, COST
+from src.Layers import SimpleLayer
 
 
 dataset_input, dataset_output = make_circles(n_samples=500, factor=0.5, noise=0.05)
