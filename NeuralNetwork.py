@@ -1,11 +1,6 @@
 import numpy as np
-from Layers import SimpleLayer
 
 ###### FUNCS ######
-def SIGMOID(x, isDerivative=False):
-    if isDerivative:
-        return x * (1 - x)
-    return 1 / (1 + np.e**(-x))
 def COST(Ypredicted, Yreal, isDerivative=False):
     if isDerivative:
         return (Ypredicted - Yreal)
@@ -15,8 +10,8 @@ def COST(Ypredicted, Yreal, isDerivative=False):
 class NeuralNetwork():
     def __init__(self, topology):
         self.layers = []
-        for neurons, prev_neurons in zip(topology[1:],topology[:-1]):
-            self.layers.append(SimpleLayer(neurons, prev_neurons))
+        for current_layer, prev_layer in zip(topology[1:],topology[:-1]):
+            self.layers.append(current_layer['type'](current_layer['size'], prev_layer['size']))
     
     def forward_pass(self, layer_input):
         a = layer_input
@@ -43,3 +38,4 @@ class NeuralNetwork():
 
     def __len__(self): return len(self.layers)
     def __getitem__(self, index): return self.layers[index]
+
