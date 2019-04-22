@@ -17,7 +17,7 @@ cycles = 2000
 
 for i in range(cycles):
     # predict + train
-    prediction = nn.backprop(dataset_input, dataset_output, learning_rate=0.09)
+    prediction = nn.backprop(dataset_input, dataset_output, learning_rate=0.07)
     
     if i % 25:
         errors.append(COST(prediction, dataset_output))
