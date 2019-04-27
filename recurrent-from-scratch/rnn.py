@@ -1,6 +1,6 @@
 import numpy as np
 
-text = open('from-scratch/recurrent-nn/modified-mc-end.txt', encoding='utf-8').read()
+text = open('recurrent-from-scratch/modified-mc-end.txt', encoding='utf-8').read()
 
 char_list = set(text)
 io_size = len(char_list)
